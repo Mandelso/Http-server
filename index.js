@@ -1,24 +1,21 @@
-const http = require('http');
+const express = require('express');
 
-const handleAllRequests = (requestObject, responseObject) =>{
-    console.log('<h1>Hi, I just received a request</h1>');
-    const url = requestObject.url;
-    if(url === '/'){
-        responseObject.write("<h1>Welcome to the home page</h1>");
-    }
+const server = express();
 
-    else if (url === '/login'){
-        responseObject.write("<h1>This is my page</h1>");
-    }
-    else if (url === '/signup'){
-        responseObject.write("<h1>This is my slack account</h1>")
-    }
-    else {
-        responseObject.write("<h1>Page not found</h1>")
-    }
-    responseObject.end();
+//request handling methods
+const handleAllTypesOfRquests = (req, res) => {
+    res.send("Response for server.use")
 }
 
-const server = http.createServer(handleAllRequests);
+const handleProfilePutRequestType = (req, res) => {
+    res.send('Respond to profile request with method of value put');
+}
 
-server.listen(3000, '127.0.0.1', ()=> console.log('Server is ready'));
+server.post('/profile', handleAllTypesOfRquests);
+server.get('/login', (req, res) => res.send('Hello, this is the login page.'))
+server.put('/profile', handleProfilePutRequestType);
+server.get('/signup', (req, res) => res.send('From the signup for get method'))
+server.post('/*', (req, res) => res.send('404s Not Found'))
+
+
+server.listen(3000, '127.0.0.1', () => console.log('Server is ready'));
